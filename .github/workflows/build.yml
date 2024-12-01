@@ -9,10 +9,10 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.12'
         
@@ -26,7 +26,7 @@ jobs:
       run: pyinstaller build_scripts/telespam.spec
       
     - name: Upload Windows artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: TeleSpam-Windows
         path: dist/TeleSpam.exe
@@ -34,10 +34,10 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.12'
         
@@ -51,7 +51,7 @@ jobs:
       run: pyinstaller build_scripts/telespam.spec
       
     - name: Upload macOS artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: TeleSpam-macOS
         path: dist/TeleSpam.app
