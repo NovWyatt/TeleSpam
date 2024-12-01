@@ -2,67 +2,58 @@ name: Build Application
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
-
-      - name: Build Windows
-        run: |
-          python -m PyInstaller telespam.spec
-
-      - name: Upload Windows artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: TeleSpam-Windows
-          path: dist/TeleSpam.exe
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+        
+    - name: Build Windows
+      run: |
+        pyinstaller --clean telespam.spec
+        
+    - name: Upload Windows artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TeleSpam-Windows
+        path: dist/TeleSpam.exe
 
   build-macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
-
-      - name: Build macOS
-        run: |
-          python -m PyInstaller --clean --windowed telespam.spec
-
-      - name: Create DMG
-        run: |
-          cd dist
-          mkdir -p dmg
-          mv TeleSpam.app dmg/
-          hdiutil create -volname TeleSpam -srcfolder dmg -ov -format UDZO TeleSpam.dmg
-
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: TeleSpam-macOS
-          path: |
-            dist/TeleSpam.app
-            dist/TeleSpam.dmg
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+        
+    - name: Build macOS
+      run: |
+        pyinstaller --clean telespam.spec
+        
+    - name: Upload macOS artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TeleSpam-macOS
+        path: dist/TeleSpam.app

@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
-import platform
+
+block_cipher = None
 
 a = Analysis(
     ['TeleSpam.py'],
@@ -15,15 +16,17 @@ a = Analysis(
         'telethon.tl.functions'
     ],
     hookspath=[],
-    hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    noarchive=False,
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
+    noarchive=False
 )
 
-pyz = PYZ(a.pure)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-if platform.system() == 'Darwin':  # macOS
+if sys.platform == 'darwin':  # macOS
     exe = EXE(
         pyz,
         a.scripts,
@@ -35,24 +38,19 @@ if platform.system() == 'Darwin':  # macOS
         strip=False,
         upx=True,
         console=False,
+        icon=None
     )
-    
-    coll = COLLECT(
+    app = BUNDLE(
         exe,
         a.binaries,
         a.zipfiles,
         a.datas,
-        strip=False,
-        upx=True,
-        upx_exclude=[],
-        name='TeleSpam'
-    )
-    
-    app = BUNDLE(
-        coll,
         name='TeleSpam.app',
-        icon=None,
-        bundle_identifier=None,
+        info_plist={
+            'NSHighResolutionCapable': 'True',
+            'LSBackgroundOnly': 'False'
+        },
+        icon=None
     )
 else:  # Windows
     exe = EXE(
@@ -69,9 +67,5 @@ else:  # Windows
         upx=True,
         upx_exclude=[],
         runtime_tmpdir=None,
-        console=False,
-        disable_windowed_traceback=False,
-        target_arch=None,
-        codesign_identity=None,
-        entitlements_file=None,
+        console=False
     )
