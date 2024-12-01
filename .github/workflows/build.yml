@@ -17,19 +17,33 @@ jobs:
         python-version: '3.12'
         
     - name: Install dependencies
-      shell: bash
       run: |
-        python -m pip install --upgrade pip --verbose
-        pip install telethon cryptg pillow pyinstaller --verbose
+        python -m pip install --upgrade pip
+        python -m pip install telethon==1.24.0
+        python -m pip install cryptg==0.4.0
+        python -m pip install pillow
+        python -m pip install pyinstaller
+        python -m pip install tk
+        
+    - name: Create Directory
+      run: |
+        mkdir -p dist
+        mkdir -p build
         
     - name: Build Windows
-      shell: bash
       run: |
-        pyinstaller --name TeleSpam --onefile --noconsole --clean src/TeleSpam.py --debug all
-      
-    - name: List directory
+        pyinstaller --name TeleSpam `
+          --onefile `
+          --windowed `
+          --clean `
+          --distpath dist `
+          --workpath build `
+          --add-data "src;src" `
+          src/TeleSpam.py
+        
+    - name: Verify Build
       run: |
-        dir /s
+        dir dist
         
     - name: Upload Windows artifact
       uses: actions/upload-artifact@v4
