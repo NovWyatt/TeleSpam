@@ -19,15 +19,17 @@ jobs:
     - name: Install dependencies
       shell: bash
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install telethon cryptg pillow pyinstaller
-        pip install tkinter tk
-
+        python -m pip install --upgrade pip --verbose
+        pip install telethon cryptg pillow pyinstaller --verbose
+        
     - name: Build Windows
       shell: bash
       run: |
-        pyinstaller --name TeleSpam --onefile --noconsole --clean src/TeleSpam.py
+        pyinstaller --name TeleSpam --onefile --noconsole --clean src/TeleSpam.py --debug all
+      
+    - name: List directory
+      run: |
+        dir /s
         
     - name: Upload Windows artifact
       uses: actions/upload-artifact@v4
@@ -47,14 +49,18 @@ jobs:
         
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install telethon cryptg pillow pyinstaller
-        pip install python-tk tk
+        python -m pip install --upgrade pip --verbose
+        pip install telethon cryptg pillow pyinstaller --verbose
+        brew install python-tk
 
     - name: Build macOS
       run: |
-        pyinstaller --name TeleSpam --onefile --noconsole --clean src/TeleSpam.py
+        pyinstaller --name TeleSpam --onefile --noconsole --clean src/TeleSpam.py --debug all
+        
+    - name: List directory
+      run: |
+        ls -la
+        ls -la dist
         
     - name: Upload macOS artifact
       uses: actions/upload-artifact@v4
