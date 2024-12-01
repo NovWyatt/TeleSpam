@@ -1,19 +1,35 @@
 # -*- mode: python ; coding: utf-8 -*-
+import sys
+import platform
 
 block_cipher = None
 
 a = Analysis(
-    ['TeleSpam.py'],
+    ['src/TeleSpam.py'],
     pathex=[],
     binaries=[],
     datas=[],
     hiddenimports=[
         'telethon',
-        'asyncio',
-        'tkinter',
         'telethon.client',
         'telethon.tl.types',
-        'telethon.tl.functions'
+        'telethon.tl.functions',
+        'telethon.crypto',
+        'telethon.network',
+        'telethon.extensions',
+        'asyncio',
+        'tkinter',
+        '_tkinter',
+        'tkinter.ttk',
+        'tkinter.messagebox',
+        'tkinter.filedialog',
+        'tkinter.scrolledtext',
+        'cryptg',
+        'PIL',
+        'json',
+        'os',
+        'threading',
+        'datetime'
     ],
     hookspath=[],
     runtime_hooks=[],
@@ -26,7 +42,7 @@ a = Analysis(
 
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
-if sys.platform == 'darwin':  # macOS
+if platform.system() == 'Darwin':  # macOS
     exe = EXE(
         pyz,
         a.scripts,
